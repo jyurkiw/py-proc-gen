@@ -2,25 +2,28 @@ import DrawApp
 import pygame
 import random
 import DrawWords
+from Pythag import RandGeo
 
-points = list()
-_color = (255, 128, 0)
-
-
-def gen_points(num_points, x_max, y_max):
-    for p in range(0, num_points):
-        loc = (random.randint(0, x_max), random.randint(0, y_max))
-        num_loc = (loc[0] + 5, loc[1] + 5)
-        points.append(loc)
-        DrawWords.add_word(str(p + 1) + " x:" + str(loc[0]) + ", y:" + str(loc[1]), num_loc)
+points = None
 
 
 def draw_points(screen, delta):
-    for p in points:
-        pygame.draw.circle(screen, _color, p, 5, 4)
+    for point in points:
+        point.draw(screen)
+
+
+def set_point_markers():
+    for p_idx in range(0, len(points)):
+        loc = points[p_idx].get()
+        loc[0] += 5
+        loc[1] += 5
+        DrawWords.add_word(str(p_idx + 1), loc)
 
 if __name__ == "__main__":
     random.seed(a=40)
-    gen_points(5, 300, 300)
+
+    points = RandGeo.gen_rand_points(10, pygame.Rect(0, 0, 640, 480))
+    set_point_markers()
+
     app = DrawApp.App([draw_points, DrawWords.draw_words])
     app.run()

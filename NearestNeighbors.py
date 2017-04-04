@@ -1,26 +1,18 @@
 import pygame
 import DrawApp
-import SqrtShortcut
 import random
 import RandomPoints
 import DrawWords
+from Pythag import Geo, RandGeo
 from operator import attrgetter
 
 tri1_color = (0, 0, 125)
 
 
-class Point(object):
+class Point(Geo.Point2D):
     def __init__(self, x, y):
-        self.x = x
-        self.y = y
         self.distance_list = list()
-
-    def __str__(self):
-        return "(" + str(self.x) + ", " + str(self.y) + ")"
-
-    def get_array(self):
-        return [self.x, self.y]
-
+        super(Point, self).__init__(x, y, None)
 
 class Distance(object):
     def __init__(self, index, distance):
@@ -35,19 +27,13 @@ class NearestPoints(object):
     def __init__(self, points):
         self.points = list()
 
-        for xy_pair in points:
-            self.points.append(Point(xy_pair[0], xy_pair[1]))
-
-        self.sqrt = SqrtShortcut.Roots()
-
-    def find_distance(self, p_index_a, p_index_b):
-        distance = abs(pow(self.points[p_index_a].x - self.points[p_index_b].x, 2) +
-                       pow((-1 * self.points[p_index_a].y) - (-1 * self.points[p_index_b].y), 2))
-        return self.sqrt.get(distance)
+        for point in points:
+            self.points.append(Point(point.x, point.y))
 
     def get_distance_list_for_point(self, p_index):
         for o_p_index in [i for i in range(0, len(self.points)) if i is not p_index]:
-            self.points[p_index].distance_list.append(Distance(o_p_index, self.find_distance(p_index, o_p_index)))
+            self.points[p_index].distance_list.append(
+                Distance(o_p_index, self.points[p_index].get_dist(self.points[o_p_index])))
 
         self.points[p_index].distance_list = sorted(self.points[p_index].distance_list, key=attrgetter('distance'))
 
@@ -99,8 +85,8 @@ def set_triangle_list():
     global triangle_list
     triangle_list = list()
 
-    sub_list = [nearestPoints.points[draw_point_idx].get_array()]
-    for t in [nearestPoints.points[d.index].get_array() for d in
+    sub_list = [nearestPoints.points[draw_point_idx].get()]
+    for t in [nearestPoints.points[d.index].get() for d in
               nearestPoints.points[draw_point_idx].distance_list[0:2]]:
         sub_list.append(t)
 
@@ -111,10 +97,11 @@ if __name__ == "__main__":
     app = DrawApp.App([RandomPoints.draw_points, draw_triangles, DrawWords.draw_words], control_space, screen_width=800)
 
     random.seed(a=40)
-    RandomPoints.gen_points(10, 640, 480)
 
     DrawWords.add_word("1", page_loc, "page")
 
+    RandomPoints.points = RandGeo.gen_rand_points(10, pygame.Rect(0, 0, 640, 480))
+    RandomPoints.set_point_markers()
     nearestPoints = NearestPoints(RandomPoints.points)
     nearestPoints.get_all_distances()
 

@@ -1,7 +1,7 @@
 import pickle
 import math
 
-_n_max = 10000
+_n_max = 1000000
 _path = "./roots.txt"
 
 

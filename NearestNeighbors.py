@@ -8,6 +8,7 @@ from operator import attrgetter
 
 tri1_color = (0, 0, 125)
 
+
 class Point(object):
     def __init__(self, x, y):
         self.x = x
@@ -40,8 +41,9 @@ class NearestPoints(object):
         self.sqrt = SqrtShortcut.Roots()
 
     def find_distance(self, p_index_a, p_index_b):
-        return self.sqrt.get(abs((self.points[p_index_a].x - self.points[p_index_b].x) +
-                                 (self.points[p_index_a].y - self.points[p_index_b].y)))
+        distance = abs(pow(self.points[p_index_a].x - self.points[p_index_b].x, 2) +
+                       pow((-1 * self.points[p_index_a].y) - (-1 * self.points[p_index_b].y), 2))
+        return self.sqrt.get(distance)
 
     def get_distance_list_for_point(self, p_index):
         for o_p_index in [i for i in range(0, len(self.points)) if i is not p_index]:
@@ -104,8 +106,9 @@ def set_triangle_list():
 
     triangle_list.append(sub_list)
 
+
 if __name__ == "__main__":
-    app = DrawApp.App([RandomPoints.draw_points, draw_triangles, DrawWords.draw_words], control_space)
+    app = DrawApp.App([RandomPoints.draw_points, draw_triangles, DrawWords.draw_words], control_space, screen_width=800)
 
     random.seed(a=40)
     RandomPoints.gen_points(10, 640, 480)

@@ -1,21 +1,52 @@
 import DrawApp
 import pygame
 
-_start_x = 20
-_start_x2 = 240
-_start_y = 20
-line_len = 200
+
+line_color = (255, 0, 0)
 
 
-def draw_lines(screen, delta):
-    start_y = _start_y
-    for i in range(1, 11):
-        for n in range(1, i):
-            pygame.draw.line(screen, (255, 0, 0), (_start_x, start_y), (_start_x + line_len, start_y + 10), 2)
-            pygame.draw.aaline(screen, (255, 0, 0), (_start_x2, start_y), (_start_x2 + line_len, start_y + 10), 2)
-        start_y += 20
+class Point(object):
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
 
+    def get(self):
+        return (self.x, self.y)
+
+
+class Line(object):
+    def __init__(self, p1, p2):
+        self.p1 = p1
+        self.p2 = p2
+
+    def draw_line(self, screen):
+        pygame.draw.aaline(screen, line_color, self.p1.get(), self.p2.get(), 2)
+
+
+class LineBlitter(object):
+    def __init__(self):
+        self.lines = list()
+
+    def add_line(self, x1, y1, x2, y2):
+        self.lines.append(Line(Point(x1, y1), Point(x2, y2)))
+
+    def draw_lines(self, screen):
+        for line in self.lines:
+            line.draw_line(screen)
+
+
+_line_blitter = LineBlitter()
+
+
+def draw_lines(screen, delta_t):
+    _line_blitter.draw_lines(screen)
 
 if __name__ == "__main__":
     app = DrawApp.App(draw_lines)
+
+    _line_blitter.add_line(5, 100, 100, 100)
+    _line_blitter.add_line(50, 200, 100, 100)
+    _line_blitter.add_line(30, 300, 100, 100)
+    _line_blitter.add_line(90, 400, 100, 100)
+
     app.run()

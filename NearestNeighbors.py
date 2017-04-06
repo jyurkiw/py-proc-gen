@@ -14,6 +14,7 @@ class Point(Geo.Point2D):
         self.distance_list = list()
         super(Point, self).__init__(x, y, None)
 
+
 class Distance(object):
     def __init__(self, index, distance):
         self.index = index

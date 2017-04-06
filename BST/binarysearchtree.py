@@ -3,6 +3,12 @@ import math
 
 class Heap(object):
     def __init__(self, get_val=None, max_heap=False):
+        """
+        Initialize the heap
+        :param get_val: The comparison key getter for whatever object or struct you're shoving in here.
+        Whatever is returned should be comparable to others of its kind with < or > 
+        :param max_heap: Min/max heap flag. Defaults to a min heap
+        """
         self.data = list()
 
         if get_val is None:

@@ -6,8 +6,8 @@ class Point2D(object):
     default_col_val = (255, 165, 0)
 
     def __init__(self, x, y, col_val=None):
-        self.x = x
-        self.y = y
+        self.x = int(x)
+        self.y = int(y)
 
         if col_val is not None:
             self.col_val = col_val

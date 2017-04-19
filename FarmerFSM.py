@@ -88,6 +88,7 @@ class Mira(FSM.FiniteStateMachine, Position.Location):
         self.dinner_is_cooked = False
         self.dinner_completion = 0
         self.name = "Mira"
+        self.message = ""
 
         FSM.FiniteStateMachine.__init__(self, self.relaxing_state)
         Position.Location.__init__(self, Position.HOUSE)

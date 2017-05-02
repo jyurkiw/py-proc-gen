@@ -2,9 +2,10 @@ import pygame
 
 
 class App(object):
-    def __init__(self, draw_func, control_func=None, screen_height=480, screen_width=640):
+    def __init__(self, draw_func, control_func=None, background_color=(0,0,0), screen_height=480, screen_width=640):
         self.draw_func = draw_func
         self.control_func = control_func
+        self.background_color = background_color
         self.screen_height = screen_height
         self.screen_width = screen_width
 
@@ -28,7 +29,7 @@ class App(object):
                 if event.type == pygame.QUIT:
                     self.done = True
 
-            self.screen.fill((0,0,0))
+            self.screen.fill(self.background_color)
 
             if type(self.draw_func) is not list:
                 self.draw_func(self.screen, clock.get_time())

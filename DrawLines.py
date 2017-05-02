@@ -24,7 +24,7 @@ def draw_lines(screen, delta_t):
     _line_blitter.draw_lines(screen)
 
 if __name__ == "__main__":
-    app = DrawApp.App(draw_lines)
+    app = DrawApp.App(draw_lines, background_color=(50, 50, 50))
 
     _line_blitter.add_line(5, 100, 100, 100)
     _line_blitter.add_line(50, 200, 100, 100)
